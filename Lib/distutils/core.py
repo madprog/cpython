@@ -205,7 +205,10 @@ def run_setup (script_name, script_args=None, stop_after="run"):
     _setup_stop_after = stop_after
 
     save_argv = sys.argv.copy()
-    g = {'__file__': script_name}
+    g = {
+        '__file__': script_name,
+        '__name__': '__main__',
+    }
     try:
         try:
             sys.argv[0] = script_name

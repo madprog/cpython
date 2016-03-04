@@ -20,6 +20,15 @@ from distutils.core import setup
 setup()
 """
 
+# setup script that checks __name__ == '__main__'
+setup_using___name__ = """\
+
+assert __name__ == '__main__'
+
+from distutils.core import setup
+setup()
+"""
+
 setup_prints_cwd = """\
 
 import os
@@ -81,6 +90,12 @@ class CoreTestCase(support.EnvironGuard, unittest.TestCase):
         # setup.py script will raise NameError.
         distutils.core.run_setup(
             self.write_setup(setup_using___file__))
+
+    def test_run_setup_provides_name(self):
+        # Make sure the script will see __name__ as '__main__'; if it has
+        # another value, the test setup.py script will raise AssertionError.
+        distutils.core.run_setup(
+            self.write_setup(setup_using___name__))
 
     def test_run_setup_preserves_sys_argv(self):
         # Make sure run_setup does not clobber sys.argv
